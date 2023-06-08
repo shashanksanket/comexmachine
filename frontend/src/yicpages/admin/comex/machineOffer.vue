@@ -2,7 +2,7 @@
 <template>
 	<div>
 		<Navbar />
-		<div class="container">
+		<div class="container-offer">
 
 			<h2 style="margin-left:auto; margin-right:auto;">Offer your Machine</h2>
 			<b-button v-if="totalMachinesInSuit.length > 0" v-b-modal.addModal variant="primary" class="add-button"
@@ -15,12 +15,12 @@
 						</b>
 					</center>
 				</h3>
-				<div v-for="data in totalMachinesInSuit" class="container2">
+				<div v-for="data in totalMachinesInSuit" class="container2-offer">
 					<div class="sub-container1">
 
 						<img src="./machine1.webp" style="border-radius:10% " width="200px" />
 					</div>
-					<div class="sub-container2">
+					<div class="sub-container2-offer">
 						<!-- {{ data }} -->
 						<h4>Location: {{ data.location }}</h4>
 						<br /><br />
@@ -209,15 +209,15 @@ export default {
 }
 
 </script>
-<style lang="scss">
+<style scoped lang="scss">
 .form {
 	max-width: 500px;
 }
 
-.container {
-	padding: 40px 40px 40px 40px;
-	gap: 8px;
-	width: 95%;
+.container-offer {
+	padding: 40px 40px 40px 40px !important;
+	gap: 8px !important;
+	width: 95% !important;
 	// height: 60%;
 	// height: 1122px;
 	// left: 54px;
@@ -255,7 +255,7 @@ export default {
 	cursor: pointer;
 }
 
-.container2 {
+.container2-offer {
 	padding: 40px 40px 40px 40px;
 	gap: 8px;
 	width: 65%;
@@ -275,7 +275,7 @@ export default {
 
 }
 
-.container2 .sub-container2 {
+.container2-offer .sub-container2-offer {
 	margin-left: 20%;
 }
 </style>

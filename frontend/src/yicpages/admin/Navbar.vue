@@ -1,51 +1,56 @@
 <template>
 <div>
-	<b-navbar   toggleable="lg" type="light" variant="">
-    
-    <!-- <b-navbar-toggle  target="nav-collapse" style="position: absolute; right:0px;"></b-navbar-toggle> -->
-    
-    <b-navbar-nav style="margin-top:5px;" href="#"><img height="60rm" src="./logo.png"></b-navbar-nav>
-	  <b-collapse id="nav-collapse" is-nav v-if="$mq === 'largeDevices'">
-        <b-navbar-nav v-if="isLoggedIn" id="navMain" style="margin-left:23% ;">
-          <b-nav-item v-if="role=='ENDUSER'"  @click="redirect('home')">Home</b-nav-item>
-          <b-nav-item v-if="role=='SUPERADMIN'" @click="redirect('admin/dashboard')">Dashboard</b-nav-item>
-          <b-nav-item v-if="role=='ENDUSER'" @click="redirect('machine/request')">Request Machine</b-nav-item>
-          <b-nav-item v-if="role=='ENDUSER'" @click="redirect('machine/offer')">Offer Machine</b-nav-item>
-          <b-nav-item v-if="role=='ENDUSER'" @click="redirect('machine/sale')">Machine Parts</b-nav-item>
-        </b-navbar-nav>
-        
-        <b-navbar-nav class="ml-auto">
-          <b-nav-item v-if="isLoggedIn" class="my-2 my-sm-0"  style="margin:20px;"><b>Hello {{firstName}}!</b></b-nav-item>
-          <b-nav-form>
+	<b-navbar toggleable="lg" type="light" variant="">
+  <b-navbar-nav>
+    <img height="60rm" src="./logo.png" class="mr-auto">
+  </b-navbar-nav>
 
-          <b-button  v-if="isLoggedIn" class="my-2 my-sm-0" variant="primary" @click="logout">
-              Logout
-            </b-button>
-        </b-nav-form>
+  <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-        
-      </b-navbar-nav>
-        
-      </b-collapse>
-      <div v-if="(($mq === 'smallDevices' || $mq === 'mediumDevices') && isLoggedIn)">
-        <div class="user" v-b-toggle.sidebar-right>
-          <svg viewBox="0 0 100 80" width="30" height="40">
-            <rect width="100" height="20"></rect>
-            <rect y="30" width="100" height="20"></rect>
-            <rect y="60" width="100" height="20"></rect>
-          </svg>
-        </div>
-        <b-sidebar
-        id="sidebar-right"
-        bg-variant="white"
-        right
-        backdrop
-        shadow
-        >
-        <SidebarRight />
-      </b-sidebar>
-    </div>
-	</b-navbar>
+  <b-collapse v-if="isLoggedIn" id="nav-collapse" is-nav>
+    <b-navbar-nav class="mx-auto">
+      <b-nav-item  v-if="isLoggedIn && role=='ENDUSER'" @click="redirect('home')">Home
+        <div :class="{ active: isActive1 }"></div>
+      </b-nav-item>
+      <b-nav-item  v-if="isLoggedIn && role=='SUPERADMIN'" @click="redirect('admin/dashboard')">Dashboard
+        <div :class="{ active: isActive2 }"></div>
+      </b-nav-item>
+      <b-nav-item  v-if="isLoggedIn && role=='SUPERADMIN'" @click="redirect('admin/stocks')">Stocks
+        <div :class="{ active: isActive3 }"></div>
+      </b-nav-item>
+      <b-nav-item  v-if="isLoggedIn && role=='ENDUSER'" @click="redirect('machine/request')">Request Machine
+        <div :class="{ active: isActive4 }"></div>
+      </b-nav-item>      
+      <b-nav-item  v-if="isLoggedIn && role=='ENDUSER'" @click="redirect('machine/offer')">Offer Machine
+        <div :class="{ active: isActive5 }"></div>
+      </b-nav-item>
+      <b-nav-item  v-if="isLoggedIn && role=='ENDUSER'" @click="redirect('machine/sale')">Machine Parts
+        <div :class="{ active: isActive6 }"></div>
+      </b-nav-item>
+    </b-navbar-nav>
+
+    <b-navbar-nav v-if="isLoggedIn" class="ml-auto">
+
+      <b-nav-item-dropdown right>
+
+        <template #button-content>
+          <em><img src="./profile.svg"></em>
+        </template>
+        <b-dropdown-item href="#">
+          <b-nav-item  class="my-2 my-sm-0"><b>Hello {{firstName}}!</b></b-nav-item>
+        </b-dropdown-item>
+        <b-dropdown-item href="#">
+          <center>
+
+            <b-button class="my-2 my-sm-0" variant="primary" @click="logout">Logout</b-button>
+          </center>
+        </b-dropdown-item>
+      </b-nav-item-dropdown>
+    </b-navbar-nav>
+  </b-collapse>
+</b-navbar>
+
+
 </div>
 </template>
   <script>
@@ -53,7 +58,7 @@
   import { ValidationProvider, ValidationObserver } from 'vee-validate'
   import {
 	  BSidebar, BModal, BForm, BFormFile, BFormGroup, BFormInput, BFormInvalidFeedback, BButton,
-	  BNavbar, BTooltip, BNavItemDropdown, BDropdownItem, VBToggle,
+	  BNavbar, BTooltip, BNavItemDropdown,Template, BDropdownItem, VBToggle,
   BNavbarToggle,
   BCollapse, BNavItem,
   BNavbarBrand,BNav, BNavbarNav,
@@ -94,6 +99,7 @@ Vue.use(VueMq, {
       BNavItemDropdown, 
       BDropdownItem,
       BNavbarToggle,
+      Template,
       BCollapse,
       BButton,
       BNav,
@@ -126,16 +132,35 @@ Vue.use(VueMq, {
       ...mapActions({
         logoutUser: "auth/logoutUser",
         searchByFunc: "comex/searchByFunc",
+        setActiveNav: "comex/setActiveNav"
 
 		}),
-		redirect(val){
+		async redirect(val){
+      if (val=='home'){
+        await this.setActiveNav('isActive1')
+      }
+      if (val=='admin/dashboard'){
+        await this.setActiveNav('isActive2')
+      }
+      if (val=='admin/stocks'){
+        await this.setActiveNav('isActive3')
+      }
+      if (val=='machine/request'){
+        await this.setActiveNav('isActive4')
+      }
+      if (val=='machine/offer'){
+        await this.setActiveNav('isActive5')
+      }
+      if (val=='machine/sale'){
+        await this.setActiveNav('isActive6')
+      }
 			this.$router.push('/'+val)
+
 		},
     logout() {
       this.$router.push({ name: "login" });
       this.logoutUser();
     },
-    
 	  },
 	  computed: {
 		  ...mapState({
@@ -148,6 +173,24 @@ Vue.use(VueMq, {
   firstName: (state) =>{
     return state.auth.currUser.firstName
   },
+  isActive1: (state) =>{
+    return state.comex.activeNavs.isActive1
+  },
+  isActive2: (state) =>{
+    return state.comex.activeNavs.isActive2
+  },
+  isActive3: (state) =>{
+    return state.comex.activeNavs.isActive3
+  },
+  isActive4: (state) =>{
+    return state.comex.activeNavs.isActive4
+  },
+  isActive5: (state) =>{
+    return state.comex.activeNavs.isActive5
+  },
+  isActive6: (state) =>{
+    return state.comex.activeNavs.isActive6
+  },
  
   
 		  }),
@@ -156,17 +199,30 @@ Vue.use(VueMq, {
   }
   
   </script>
-  <style>
+  <style scoped>
 *{
 	font-weight:bolder ;
 }
+@keyframes animate {
+  from {
+    width: 0%;
+    left:0px;
+  }
+  to {
+    width: 100%;
+    left: auto;
+  }
+}
 .navbar{
-	height: 90px;
-
-
-/* Primary / Light blue */
-
-background: #e1e5f1;
+	height: 60px;
+  background: #e1e5f1;
+}
+.active{
+  /* margin-top: 200px; */
+  border: 2px solid rgb(6, 76, 156);
+  margin-top: 5%;
+  border-bottom: 20%;
+  animation: 1s linear animate
 }
 
 

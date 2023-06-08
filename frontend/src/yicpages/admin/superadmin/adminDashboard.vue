@@ -18,13 +18,13 @@
 								<template #button-content>
 									<img src="./more-vertical.svg" size="16" class="align-middle text-body" />
 								</template>
-								<!-- <b-dropdown-item v-b-modal.deleteModal>
+							<!-- <b-dropdown-item v-b-modal.deleteModal>
 									<img src="./trash.svg" size="16" class="align-middle text-body" />
 									<span class="align-middle ml-50">Delete</span>
 								</b-dropdown-item>
 								<b-modal ok-title="Yes" @ok="deleteRow(data.item.id)" id="deleteModal">
 									<h4>Are you sure?</h4>
-								</b-modal> -->
+									</b-modal> -->
 								<b-dropdown-item v-b-modal.requestModal @click="requests(data.item.id)">
 									<img src="./request.svg" size="16" class="align-middle text-body" />
 									<span class="align-middle ml-50">All Requests</span>
@@ -47,27 +47,28 @@
 									<template #button-content>
 										<img src="./more-vertical.svg" size="16" class="align-middle text-body" />
 									</template>
-									<b-dropdown-item v-b-modal.declineModal >
+									<b-dropdown-item v-b-modal.declineModal @click="edit(data)">
 										<img src="./trash.svg" size="16" class="align-middle text-body" />
 										<span class="align-middle ml-50">Decline</span>
 									</b-dropdown-item>
-									<b-dropdown-item v-b-modal.approveModal >
-										<img src="./request.svg" size="16" class="align-middle text-body" />
+									<b-dropdown-item v-b-modal.approveModal @click="edit(data)">
+										<img src="./request.svg" size="16"  class="align-middle text-body" />
 										<span class="align-middle ml-50">Approve</span>
 									</b-dropdown-item>
 								</b-dropdown>
-								<b-modal id="declineModal" ok-title="Yes" @ok="decline(data.item.id)">
-									<h4>Are you sure?</h4>
 
-								</b-modal>
-								<b-modal id="approveModal" ok-title="Yes" @ok="approve(data.item.id)">
-									
-									<h4>Are you sure?</h4>
-
-								</b-modal>
 							</template>
 
 						</b-table>
+
+					</b-modal>
+					<b-modal id="declineModal" ok-title="Yes" @ok="decline(editData.id)">
+						<h4>Are you sure?</h4>
+
+					</b-modal>
+					<b-modal id="approveModal" ok-title="Yes" @ok="approve(editData.id)">
+
+						<h4>Are you sure?</h4>
 
 					</b-modal>
 				</div>
@@ -144,6 +145,9 @@ export default {
 				{ key: 'rate' },
 				{ key: 'Actions' }
 			],
+			editData: {
+				id:0
+			}
 		}
 	},
 	computed: {
@@ -175,14 +179,17 @@ export default {
 			this.$router.push({ name: "login" });
 			this.logoutUser();
 		},
+		edit(data){
+			this.editData.id = data.item.id
+		},
 		async requests(id) {
 			await this.getMachineReqList(id)
 		},
-		async decline(id){
+		async decline(id) {
 			await this.declineReq(id)
 			this.$refs['requestModal'].hide()
 		},
-		async approve(id){
+		async approve(id) {
 			await this.approveReq(id)
 			this.$refs['requestModal'].hide()
 		},
@@ -196,7 +203,7 @@ export default {
 	},
 }
 </script>
-<style lang="scss">
+<style scoped lang="scss">
 .container1 {
 	padding: 40px 40px 40px 40px;
 	margin: 50px;
