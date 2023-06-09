@@ -5,7 +5,7 @@
 		<div >
 
 
-			<div v-for="data in machines ">
+			<div v-if="data" v-for="data in machines ">
 
 				<div class="container1">
 					<div class="sub-container1">
@@ -22,6 +22,14 @@
 					
 					</div>
 				</div>
+			</div>
+			<div v-else class="container">
+				<center>
+
+					<h4 style="margin-left:auto; display: inline-block; margin-right:auto">No machines on rent yet!</h4>
+					<br><br>
+					<b-button style="width:40%; margin-right:auto; display: inline-block; margin-left:auto;" variant="primary" class="add-button" @click="redirect('machine/offer')">Rent your machine</b-button>
+				</center>
 			</div>
 			<b-modal id="requestModal" @ok="request()" ok-title="Yes" title="Request Machine">
 				<h4>Are you sure about that?</h4>
@@ -130,7 +138,30 @@ export default {
 	},
 }
 </script>
-<style lang="scss">
+<style scoped lang="scss">
+body{
+    overflow-x: hidden;
+
+}
+.container{
+	padding: 40px 40px 40px 40px;
+	gap: 8px;
+	width: 45%;
+	height: 60%;
+	align-items: center;
+	align-content: center;
+	// height: 1122px;
+	// left: 54px;
+	// top: 168.02px;
+	margin-top: 10%;
+	margin-left: auto !important;
+	margin-right: auto !important;
+	margin-bottom: 50px;
+	background: #FFFFFF;
+	box-shadow: 0px 4px 18px rgba(0, 0, 0, 0.12);
+	border-radius: 10px;
+}
+
 .container1 {
 	padding: 40px 40px 40px 40px;
 	gap: 8px;
@@ -143,7 +174,8 @@ export default {
 	margin-left: auto !important;
 	margin-right: auto !important;
 	margin-bottom: 50px;
-	background: #FFFFFF;
+
+	background: #d8e2ed;
 	box-shadow: 0px 4px 18px rgba(0, 0, 0, 0.12);
 	border-radius: 10px;
 	display: flex;

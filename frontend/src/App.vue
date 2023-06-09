@@ -124,6 +124,39 @@ export default {
   #app{
     background: #e1e5f1;
     height: 100%;
+    overflow-x: hidden;
 
   }
+  body{
+    /* Track */
+scrollbar-width: thin;
+scrollbar-color: #ccc #f5f5f5;
+
+/* Thumb */
+scrollbar-face-color: #ccc;
+scrollbar-shadow-color: #f5f5f5;
+scrollbar-highlight-color: #f5f5f5;
+scrollbar-3dlight-color: #f5f5f5;
+scrollbar-darkshadow-color: #ccc;
+scrollbar-track-color: #f5f5f5;
+  }
+/* Webkit fallback */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #999;
+}
+
+  
 </style>

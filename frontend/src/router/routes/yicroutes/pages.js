@@ -41,6 +41,17 @@ export default [
     },
   },
   {
+    path: '/admin/stocks',
+    name: 'adminStocks',
+    component: () => import("@/yicpages/admin/superadmin/stocks.vue"),
+    meta: {
+      layout: "full",
+      authReq: false,
+      adminReq: true
+
+    },
+  },
+  {
     path: '/machine/sale',
     name: 'salePage',
     component: () => import("@/yicpages/admin/comex/sale.vue"),

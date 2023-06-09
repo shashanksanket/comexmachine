@@ -10,6 +10,17 @@
     "default": 10,
     "max": 50
   },
+  "feathers-mail": {
+    "from": "shashank.sanket014@gmail.com",
+    "smtp": {
+        "host": "smtp.host.here",
+        "secure": true,
+        "auth": {
+          "user": "smtp@user.here",
+          "pass": "replacewithpassword"
+        }
+    }
+  },
   "authentication": {
     "entity": "users",
     "service": "api/users",

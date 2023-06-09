@@ -12,27 +12,29 @@
 			</b>
 		</center>
 	</h3>
-	<div v-for="data in 10" class="container2">
+	<div v-for="data in stockList" class="container2">
 		<div class="sub-container1">
 
-			<img src="./machine1.webp" style="border-radius:10% " width="200px" />
+			<img src="./machine1.webp" style="border-radius:5% " width="200px" />
 		</div>
 		<div class="sub-container2">
-			<!-- {{ data }} -->
-			<h4>Machine part: </h4>
+			<h4>Ttile: {{ data.Title }} </h4>
 			<br /><br />
-			<h4>Rate: </h4>
+			<h4>Description:{{ data.Description }} </h4>
 			<br /><br />
-			<h4>Rate: </h4>
-			<div style="margin-top: 30%;">
+			<h4>Location:{{ data.location }} </h4>
+			<br /><br />
+			<h4>Rate: {{ data.Rate }} </h4>
 
-				
-			</div>
+			<b-button v-b-modal.buyRequest style="margin-top:10%; width:100%" variant="primary" @click="buy(data.id)">Buy</b-button>
 		</div>
 	</div>
 </div>
 
 </div>
+<b-modal id="buyRequest" @ok="requestBuy()" ok-title="Yes" title="Buy Machine">
+				<h4>Are you sure about that?</h4>
+			</b-modal>
 		
 	</div>
 </template>
@@ -90,35 +92,15 @@ export default {
 		return {
 			success: false,
 			max: 100,
+			selectedId : 0
 
 		}
 	},
 	computed: {
 		...mapState({
-			Totaldata: (state) => {
-				return state.comex.Totaldata;
+			stockList: (state) => {
+				return state.admin.stockList;
 			},
-			TotalOlts: (state) => {
-				return state.comex.TotalOlts;
-			},
-			TotalConnection: (state) => {
-				return state.comex.TotalConnection;
-			},
-			Totaldisconnection: (state) => {
-				return state.comex.Totaldisconnection;
-			},
-			TotalConnectionLeft: (state) => {
-				return state.comex.TotalConnectionLeft;
-			},
-			TotalVlan: (state) => {
-				return state.comex.TotalVlan;
-			},
-			error: (state) => {
-				return state.comex.errorsInGetData;
-			},
-			role: (state) => {
-				return state.auth.currUser.role;
-			}
 
 		}),
 	},
@@ -128,36 +110,27 @@ export default {
 			getData: "comex/getData",
 			logoutUser: "auth/logoutUser",
 			getData: "comex/getData",
-			totalProgress: "comex/totalProgress"
+			totalProgress: "comex/totalProgress",
+			getStocksList: "admin/getStocksList"
 
 		}),
+		buy(id){
+			this.selectedId = id 
+		},
 		onidle() {
 			alert('You have been logged out due to inactivity of 15 minutes')
 			this.$router.push({ name: "login" });
 			this.logoutUser();
 		},
-
-		async Download() {
-			await this.getData()
-			console.log([this.data])
-			var csv = Papa.unparse(this.data)
-			// Papa.download(unparsedResults, 'LatestData')
-			let content = new Blob([csv]);
-			let urlObject = window.URL || window.webkitURL || window;
-			let url = urlObject.createObjectURL(content);
-			let el = document.createElement("a");
-			el.setAttribute('href', url)
-			el.setAttribute('download', 'CsvExport.csv')
-			el.click();
-			urlObject.revokeObjectURL(url);
-			this.success = true
+		requestBuy(){
+			this.$router.push('/payment')
 		}
+		
 
 
 	},
 	async mounted() {
-		await this.getData()
-		await this.totalProgress()
+		await this.getStocksList()
 	},
 
 
@@ -165,7 +138,7 @@ export default {
 }
 
 </script>
-<style lang="scss">
+<style scoped lang="scss">
 .container1 {
 	padding: 55px 30px;
 	gap: 8px;
@@ -189,21 +162,27 @@ export default {
 	padding: 55px 30px;
 	gap: 8px;
 
-	width: 40%;
+	width: 60%;
 	height: 60%;
 	// height: 1122px;
 	// left: 54px;
 	// top: 168.02px;
 	margin-top: 35px;
-	margin-left: 50px;
-	margin-right: 50px;
+	margin-left:auto;
+	margin-right:auto;
+	// margin-left: 50px;
+	// margin-right: 50px;
 	margin-bottom: 50px;
+	display: flex;
+	flex-direction: row;
 
 	background: #FFFFFF;
 	box-shadow: 0px 4px 18px rgba(0, 0, 0, 0.12);
 	border-radius: 10px;
 }
-
+.sub-container2{
+	margin-left:10%;
+}
 .container3 {
 	padding: 55px 30px;
 	gap: 8px;
